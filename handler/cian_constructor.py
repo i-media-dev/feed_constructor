@@ -1,0 +1,2 @@
+class CianFeedConstructor:
+    pass

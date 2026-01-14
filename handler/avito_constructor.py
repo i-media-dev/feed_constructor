@@ -1,0 +1,2 @@
+class AvitoFeedConstructor:
+    pass

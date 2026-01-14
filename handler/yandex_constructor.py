@@ -1,0 +1,2 @@
+class YandexFeedConstructor:
+    pass
