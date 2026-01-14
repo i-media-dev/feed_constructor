@@ -1,8 +1,8 @@
 import logging
 from pathlib import Path
 
-from handler.exceptions import DirectoryCreationError, EmptyFeedsListError
-from handler.logging_config import setup_logging
+from constructor.exceptions import DirectoryCreationError, EmptyFeedsListError
+from constructor.logging_config import setup_logging
 
 setup_logging()
 

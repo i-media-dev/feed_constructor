@@ -8,12 +8,12 @@ from http.client import IncompleteRead
 import mysql.connector
 import requests
 
-from handler.constants import (ATTEMPTION_LOAD_FEED, DATE_FORMAT, MAX_RETRIES,
-                               TIME_DELAY, TIME_FORMAT)
-from handler.db_config import config
-from handler.exceptions import (DirectoryCreationError, EmptyFeedsListError,
-                                GetTreeError, StructureXMLError)
-from handler.logging_config import setup_logging
+from constructor.constants import (ATTEMPTION_LOAD_FEED, DATE_FORMAT, MAX_RETRIES,
+                                   TIME_DELAY, TIME_FORMAT)
+from constructor.db_config import config
+from constructor.exceptions import (DirectoryCreationError, EmptyFeedsListError,
+                                    GetTreeError, StructureXMLError)
+from constructor.logging_config import setup_logging
 
 setup_logging()
 
