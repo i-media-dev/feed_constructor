@@ -1,11 +1,8 @@
-# import xml.etree.ElementTree as ET
-
 from constructor.exceptions import RequiredFieldsError
-from constructor.mixins import FileMixin
 from constructor.domain_model import RealtyObject
 
 
-class CianFeedConstructor(FileMixin):
+class CianFeedConstructor:
 
     def __init__(self, obj: RealtyObject):
         self.obj = obj
