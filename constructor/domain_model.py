@@ -15,6 +15,10 @@ class ObjectType(Enum):
     FLAT = 'flat'
     HOUSE = 'house'
     ROOM = 'room'
+    GARAGE = 'garage'
+    COTTAGE = 'cottage'
+    BED = 'bed'
+    TOWNHOUSE = 'townhouse'
     COMMERCIAL = 'commercial'
 
 
@@ -55,6 +59,14 @@ class Geo:
 
 
 @dataclass
+class Underground:
+    name: str
+    id: Optional[int] = None
+    time_minutes: Optional[int] = None
+    transport_type: Optional[str] = None
+
+
+@dataclass
 class Address:
     """Модель с полной гео информацией."""
     country: Optional[str] = None
@@ -66,6 +78,7 @@ class Address:
     block: Optional[str] = None
     apartment: Optional[str] = None
     geo: Optional[Geo] = None
+    undergrounds: List[Underground] = field(default_factory=list)
 
 
 @dataclass

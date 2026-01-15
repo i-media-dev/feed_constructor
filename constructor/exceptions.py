@@ -32,3 +32,7 @@ class CleanDataBaseError(ValueError):
 
 class StructureXMLError(ValueError):
     """Ошибка структуры XML-файла."""
+
+
+class RequiredFieldsError(Exception):
+    """Не заданы обязательные поля."""
