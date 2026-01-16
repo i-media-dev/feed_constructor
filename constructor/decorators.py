@@ -1,21 +1,24 @@
-# import functools
-# import json
-# import logging
-# import time
-# from datetime import datetime as dt
-# from http.client import IncompleteRead
+import functools
+import json
+import logging
+import time
+from datetime import datetime as dt
 
-# import mysql.connector
-# import requests
-
+from constructor.constants import DATE_FORMAT, TIME_FORMAT
 # from constructor.constants import (ATTEMPTION_LOAD_FEED, DATE_FORMAT, MAX_RETRIES,
 #                                    TIME_DELAY, TIME_FORMAT)
 # from constructor.db_config import config
 # from constructor.exceptions import (DirectoryCreationError, EmptyFeedsListError,
 #                                     GetTreeError, StructureXMLError)
-# from constructor.logging_config import setup_logging
+from constructor.logging_config import setup_logging
 
-# setup_logging()
+# from http.client import IncompleteRead
+
+# import mysql.connector
+# import requests
+
+
+setup_logging()
 
 
 def time_of_script(func):

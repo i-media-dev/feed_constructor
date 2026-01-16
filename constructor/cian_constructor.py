@@ -1,5 +1,5 @@
-from constructor.exceptions import RequiredFieldsError
 from constructor.domain_model import RealtyObject
+from constructor.exceptions import RequiredFieldsError
 
 
 class CianFeedConstructor:
