@@ -1,2 +1,2 @@
-class AvitoFeedConstructor:
+class AvitoDictConstructor:
     pass

@@ -1,6 +1,6 @@
 import logging
 
-from constructor.cian_constructor import CianFeedConstructor
+from constructor.cian_constructor import CianDictConstructor
 from constructor.cian_feed_creator import CianFeedCreator
 from constructor.decorators import time_of_script
 from constructor.logging_config import setup_logging

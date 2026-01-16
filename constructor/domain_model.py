@@ -6,26 +6,28 @@ from typing import List, Optional
 
 class DealType(Enum):
     """Тип сделки."""
-    RENT = 'rent'
-    SALE = 'sale'
+    RENT = 'rent'  # аренда
+    SALE = 'sale'  # продажа
 
 
 class ObjectType(Enum):
     """Тип объекта недвижимости."""
-    FLAT = 'flat'
-    HOUSE = 'house'
-    ROOM = 'room'
-    GARAGE = 'garage'
-    COTTAGE = 'cottage'
-    BED = 'bed'
-    TOWNHOUSE = 'townhouse'
-    COMMERCIAL = 'commercial'
+    FLAT = 'flat'  # квартира
+    HOUSE = 'house'  # дом
+    ROOM = 'room'  # комната
+    GARAGE = 'garage'  # гараж
+    COTTAGE = 'cottage'  # коттедж
+    BED = 'bed'  # койко-место
+    TOWNHOUSE = 'townhouse'  # таунхаус
+    COMMERCIAL = 'commercial'  # коммерческая
+    DUPLEX = 'duplex'  # дюплекс
+    LOT = 'lot'  # участок
 
 
 class RentPeriod(Enum):
     """Период аренды."""
-    DAILY = 'daily'
-    MONTHLY = 'monthly'
+    DAILY = 'daily'  # по дням
+    MONTHLY = 'monthly'  # по месяцам
 
 
 class Currency(Enum):
@@ -35,150 +37,161 @@ class Currency(Enum):
     EUR = 'EUR'
 
 
+# class Renovation(Enum):
+#     """Тип ремонта."""
+#     EUVRO = 'евроремонт'
+#     COSMETIC = 'косметический'
+#     DESIGNER = 'дизайнерский'
+#     REPAIR = 'требует ремонта'
+
+
 @dataclass
 class Phone:
     """Номер телефона."""
-    country_code: str
-    number: str
+    country_code: str  # телефонный код страны
+    number: str  # номер телефона
 
 
 @dataclass
 class Contacts:
     """Модель с суммарной контактной информацией."""
-    phones: List[Phone] = field(default_factory=list)
-    contact_email: Optional[str] = None
-    owner_name: Optional[str] = None
-    agent_name: Optional[str] = None
+    phones: List[Phone] = field(default_factory=list)  # номер телефона
+    contact_email: Optional[str] = None  # почта
+    owner_name: Optional[str] = None  # имя владельца
+    agent_name: Optional[str] = None  # имя агента
 
 
 @dataclass
 class Geo:
     """Координаты."""
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    latitude: Optional[float] = None  # широта
+    longitude: Optional[float] = None  # долгота
 
 
 @dataclass
 class Underground:
-    name: str
-    id: Optional[int] = None
-    time_minutes: Optional[int] = None
-    transport_type: Optional[str] = None
+    """Модель информации о метро."""
+    name: str  # название
+    id: Optional[int] = None  # айди (нужен для некоторых площадок)
+    time_walk: Optional[int] = None  # время на путь до метро пешком
+    time_transport: Optional[str] = None  # время на путь до метро транспорт
 
 
 @dataclass
 class Address:
     """Модель с полной гео информацией."""
-    country: Optional[str] = None
-    region: Optional[str] = None
-    city: Optional[str] = None
-    district: Optional[str] = None
-    street: Optional[str] = None
-    house_number: Optional[str] = None
-    block: Optional[str] = None
-    apartment: Optional[str] = None
-    geo: Optional[Geo] = None
-    undergrounds: List[Underground] = field(default_factory=list)
+    country: Optional[str] = None  # Страна
+    region: Optional[str] = None  # Область
+    city: Optional[str] = None  # Город
+    district: Optional[str] = None  # Район
+    street: Optional[str] = None  # Улица
+    house_number: Optional[str] = None  # Номер дома
+    block: Optional[str] = None  # Корпус
+    apartment: Optional[str] = None  # Номер квартиры
+    geo: Optional[Geo] = None  # Координаты
+    undergrounds: List[Underground] = field(default_factory=list)  # Метро
 
 
 @dataclass
 class RentInfo:
     """Информация об аренде."""
-    price: Optional[float] = None
-    currency: Optional[Currency] = None
-    period: Optional[RentPeriod] = None
+    price: Optional[float] = None  # Цена
+    currency: Optional[Currency] = None  # Валюта
+    period: Optional[RentPeriod] = None  # Период
 
-    security_deposit: Optional[float] = None
-    agent_fee_percent: Optional[float] = None
-    utilities_included: Optional[bool] = None
+    security_deposit: Optional[float] = None  # залог
+    agent_fee_percent: Optional[float] = None  # процент агентского взноса
+    utilities_included: Optional[bool] = None  # включение коммунальных услуг
 
-    min_rent_term_months: Optional[int] = None
+    min_rent_term_months: Optional[int] = None  # Минимальный срок аренды
 
 
 @dataclass
 class Deal:
     """Модель с общей информацией о сделке."""
-    deal_type: DealType
-    rent: Optional[RentInfo] = None
+    deal_type: DealType  # тип сделки (аренда, покупка)
+    rent: Optional[RentInfo] = None  # информация об аренде
 
 
 @dataclass
 class FlatDetails:
     """Информация по помещению."""
-    rooms_count: Optional[int] = None
+    rooms_count: Optional[int] = None  # количество комнат
 
-    total_area: Optional[float] = None
-    living_area: Optional[float] = None
-    kitchen_area: Optional[float] = None
+    total_area: Optional[float] = None  # общая площадь
+    living_area: Optional[float] = None  # жилая площадь
+    kitchen_area: Optional[float] = None  # площадь кухни
 
-    floor: Optional[int] = None
-    floors_total: Optional[int] = None
+    floor: Optional[int] = None  # этаж
+    floors_total: Optional[int] = None  # всего этажей
 
-    ceiling_height: Optional[float] = None
+    ceiling_height: Optional[float] = None  # высота потолков
 
-    balconies_count: Optional[int] = None
-    loggias_count: Optional[int] = None
+    balconies_count: Optional[int] = None  # количество балконов
+    loggias_count: Optional[int] = None  # количество лоджий
 
-    repair_type: Optional[str] = None
-    layout_type: Optional[str] = None
+    # repair_type: Optional[str] = None
+    layout_type: Optional[str] = None  # тип макета
 
 
 @dataclass
 class BuildingDetails:
     """Информация по строению."""
-    year_built: Optional[int] = None
-    building_type: Optional[str] = None
+    year_built: Optional[int] = None  # год постройки
+    building_type: Optional[str] = None  # тип строения
 
-    has_elevator: Optional[bool] = None
-    has_parking: Optional[bool] = None
-    has_garbage_chute: Optional[bool] = None
+    has_elevator: Optional[bool] = None  # лифт
+    has_parking: Optional[bool] = None  # паркинг
+    has_garbage_chute: Optional[bool] = None  # мусоропровод
 
 
 @dataclass
 class Conditions:
     """Условия проживания."""
-    pets_allowed: Optional[bool] = None
-    children_allowed: Optional[bool] = None
-    smoking_allowed: Optional[bool] = None
+    pets_allowed: Optional[bool] = None  # животные
+    children_allowed: Optional[bool] = None  # дети
+    smoking_allowed: Optional[bool] = None  # курение
 
-    furnished: Optional[bool] = None
-    has_washer: Optional[bool] = None
-    has_tv: Optional[bool] = None
-    has_internet: Optional[bool] = None
+    furnished: Optional[bool] = None  # мебель
+    has_washer: Optional[bool] = None  # стиральная машина
+    has_tv: Optional[bool] = None  # телевизор
+    has_internet: Optional[bool] = None  # интернет
+
+    renovation: Optional[str] = None  # тип ремонта
 
 
 @dataclass
 class Photo:
     """Фото."""
-    url: str
-    is_default: bool = False
+    url: str  # ссылка на фото
+    is_default: bool = False  # использовать фото по умолчанию
 
 
 @dataclass
 class Media:
     """Медиа данные объекта."""
-    photos: List[Photo] = field(default_factory=list)
-    videos: List[str] = field(default_factory=list)
-    virtual_tour_url: Optional[str] = None
+    photos: List[Photo] = field(default_factory=list)  # фото
+    videos: List[str] = field(default_factory=list)  # видео
+    virtual_tour_url: Optional[str] = None  # виртуальный тур
 
 
 @dataclass
 class RealtyObject:
     """Моедль с суммарной полной информацией по объекту недвижимости."""
-    id: str
+    id: str  # айди объекта
 
-    object_type: ObjectType
-    deal: Deal
+    object_type: ObjectType  # тип объекта
+    deal: Deal  # тип сделки
 
-    address: Optional[Address] = None
-    flat: Optional[FlatDetails] = None
-    building: Optional[BuildingDetails] = None
+    address: Optional[Address] = None  # адрес
+    flat: Optional[FlatDetails] = None  # информация по квартире
+    building: Optional[BuildingDetails] = None  # информация по зданию
 
-    conditions: Optional[Conditions] = None
-    media: Optional[Media] = None
-    contacts: Optional[Contacts] = None
+    conditions: Optional[Conditions] = None  # условия проживания
+    media: Optional[Media] = None  # все медиа для объекта
+    contacts: Optional[Contacts] = None  # контактные данные
 
-    description: Optional[str] = None
+    description: Optional[str] = None  # описание
 
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
+    created_at: Optional[datetime] = None  # когда создано
+    updated_at: Optional[datetime] = None  # когда обновлено

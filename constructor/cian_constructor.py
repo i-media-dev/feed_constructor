@@ -1,8 +1,13 @@
+import logging
+
 from constructor.domain_model import RealtyObject
 from constructor.exceptions import RequiredFieldsError
+from constructor.logging_config import setup_logging
+
+setup_logging()
 
 
-class CianFeedConstructor:
+class CianDictConstructor:
 
     def __init__(self, obj: RealtyObject):
         self.obj = obj
@@ -56,12 +61,18 @@ class CianFeedConstructor:
         ]
 
     def get_required_fields(self):
-        return {
-            'Category': self._get_category(),
-            'ExternalId': self.obj.id,
-            'Description': self.obj.description,
-            'Address': self._get_adress(),
-            'FlatRoomsCount': self.obj.flat.rooms_count,
-            'Phones': self._get_phones(),
-            'TotalArea': self.obj.flat.total_area,
-        }
+        try:
+            return {
+                'Category': self._get_category(),
+                'ExternalId': self.obj.id,
+                'Description': self.obj.description,
+                'Address': self._get_adress(),
+                'FlatRoomsCount': self.obj.flat.rooms_count,
+                'Phones': self._get_phones(),
+                'TotalArea': self.obj.flat.total_area,
+            }
+        except RequiredFieldsError:
+            raise
+        except Exception as error:
+            logging.error('Неожиданная ошибка: %s', error)
+            raise
