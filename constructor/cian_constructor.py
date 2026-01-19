@@ -21,7 +21,7 @@ class CianDictConstructor:
 
         return f'{object_type}{deal_type}'
 
-    def _get_adress(self):
+    def _get_address(self):
         if not self.obj.address:
             raise RequiredFieldsError(
                 'Отсутствуют обязательные поля для адреса'
@@ -66,7 +66,7 @@ class CianDictConstructor:
                 'Category': self._get_category(),
                 'ExternalId': self.obj.id,
                 'Description': self.obj.description,
-                'Address': self._get_adress(),
+                'Address': self._get_address(),
                 'FlatRoomsCount': self.obj.flat.rooms_count,
                 'Phones': self._get_phones(),
                 'TotalArea': self.obj.flat.total_area,

@@ -12,6 +12,33 @@ class YandexDictConstructor:
     def __init__(self, obj: RealtyObject):
         self.obj = obj
 
+    def _get_address(self):
+        if not self.obj.address:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательные поля для адреса'
+            )
+        country = self.obj.address.country if self.obj.address.country else ''
+        region = self.obj.address.region if self.obj.address.region else ''
+        city = self.obj.address.city if self.obj.address.city else ''
+        district = (
+            self.obj.address.district if self.obj.address.district else ''
+        )
+        street = self.obj.address.street if self.obj.address.street else ''
+        block = self.obj.address.block if self.obj.address.block else ''
+        apartment = (
+            self.obj.address.apartment if self.obj.address.apartment else ''
+        )
+        address = (
+            f'{country} {region} {city} '
+            f'{district} {street} {block} {apartment}'
+        )
+        if address == '':
+            raise RequiredFieldsError(
+                'Отсутствуют обязательные поля для адреса'
+            )
+
+        return ', '.join(address.split())
+
     def _get_type_deal(self):
         if not self.obj.deal and not self.obj.deal.deal_type:
             raise RequiredFieldsError('Отсутствуют обязательные поля сделки')
@@ -31,44 +58,77 @@ class YandexDictConstructor:
         return property_type
 
     def _get_location(self):
-        if not self.obj.address:
+        if not self.obj.address or not self.obj.address.geo:
             raise RequiredFieldsError(
                 'Отсутствуют обязательные поля для контактов'
             )
+        metros = []
+        for metro in self.obj.address.undergrounds or []:
+            metros.append({
+                'name': metro.name,
+                'time-on-foot': metro.time_walk,
+                'time-on-transport': metro.time_transport,
+            })
+
         return {
-            'address':,
-            'latitude':,
-            'longitude',
-            'metro':,
+            'address': self._get_address(),
+            'latitude': self.obj.address.geo.latitude,
+            'longitude': self.obj.address.geo.longitude,
+            'metro': metros
+        }
+
+    def _get_sales_agent_info(self):
+        if not self.obj.contacts or not self.obj.contacts.phones:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательные поля агента'
+            )
+        return {
+            'category': 'agency',
+            'phone': [
+                f'{phone.country_code}{phone.number}'
+                for phone in self.obj.contacts.phones
+            ]
+        }
+
+    def _get_price(self):
+        if not self.obj.deal or not self.obj.deal.rent or not \
+                self.obj.deal.rent.price or not self.obj.deal.rent.currency:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательные поля цены'
+            )
+        return {
+            'value': self.obj.deal.rent.price,
+            'currency': self.obj.deal.rent.currency
+        }
+
+    def _get_area(self):
+        if not self.obj.flat or not self.obj.flat.total_area:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательные поля площади'
+            )
+        return {
+            'value': self.obj.flat.total_area,
+            'unit': 'кв. м'
         }
 
     def get_required_fields(self):
         try:
             return {
+                'internal-id': '1',
                 'type': self._get_type_deal(),
                 'property-type': self._get_property(),
                 'category': self.obj.object_type.value,
                 'creation-date': self.obj.created_at,
-                'location':,
-                'sales-agent':,
-                'phone':,
-                'category':,
-                'price':,
-                'value':,
-                'currency':,
-                'period':,
-                'deal-status':,
-                'area':,
-                'room-space':,
-                'living-space':,
-                'image':,
-                'rooms':,
-                'rooms-offered':,
-                'floor':,
-                'room-furniture':,
-                'yandex-building-id':, # специфичные поля (нужно что-то вроде бд или таблицы соответстий)
-                'yandex-house-id':, # специфичные поля (нужно что-то вроде бд или таблицы соответстий)
-                'built-year':,
+                'location': self._get_location(),
+                'sales-agent': self._get_sales_agent_info(),
+                'price': self._get_price(),
+                'area': self._get_area(),
+                'rooms': self.obj.flat.rooms_count,
+                'rooms-offered': self.obj.flat.rooms_count,
+                'floor': self.obj.flat.floor,
+                # 'yandex-building-id':, # специфичные поля (нужно что-то таблицы соответстий)
+                # 'yandex-house-id':, # специфичные поля (нужно что-то таблицы соответстий)
+                # 'built-year':,
             }
         except RequiredFieldsError:
             raise

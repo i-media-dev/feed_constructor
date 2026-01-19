@@ -29,3 +29,18 @@ SCHEMA_NAMES = {
     'Undergrounds': 'UndergroundInfoSchema'
 }
 """Поля и название схемы, которое к ним относится."""
+
+TEST_CIAN_DICT = {
+    'Category': 'flatRent',
+    'Address': 'Москва, Севастопольский пр-т, дом 16',
+    'Phones': [
+        {
+            'CountryCode': '+7',
+            'Number': '9156033754'
+        },
+        {
+            'CountryCode': '+7',
+            'Number': '9105630748'
+        }
+    ]
+}
