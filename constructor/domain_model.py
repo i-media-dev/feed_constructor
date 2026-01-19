@@ -59,6 +59,8 @@ class Contacts:
     contact_email: Optional[str] = None  # почта
     owner_name: Optional[str] = None  # имя владельца
     agent_name: Optional[str] = None  # имя агента
+    # право собственности (посредник, застройщик, владелец)
+    property_rights: Optional[str] = None
 
 
 @dataclass
@@ -139,6 +141,7 @@ class BuildingDetails:
     """Информация по строению."""
     year_built: Optional[int] = None  # год постройки
     building_type: Optional[str] = None  # тип строения
+    building_material: Optional[str] = None  # материал строения
 
     has_elevator: Optional[bool] = None  # лифт
     has_parking: Optional[bool] = None  # паркинг
