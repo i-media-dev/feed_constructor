@@ -45,32 +45,66 @@ class AvitoDictConstructor:
     def _get_market_type(self):
         if not self.obj.building or not self.obj.building.building_type:
             raise RequiredFieldsError(
-                'Отсутствуют обязательные поля типа постройки'
+                'Отсутствуют обязательное поле типа постройки'
             )
         return self.obj.building.building_type
 
     def _get_house_type(self):
         if not self.obj.building or not self.obj.building.building_material:
             raise RequiredFieldsError(
-                'Отсутствуют обязательные поля типа постройки'
+                'Отсутствуют обязательное поле материала постройки'
             )
         return self.obj.building.building_material
+
+    def _get_floor(self):
+        if not self.obj.flat or not self.obj.flat.floor:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле этажа'
+            )
+        return self.obj.flat.floor
+
+    def _get_rooms(self):
+        if not self.obj.flat or not self.obj.flat.rooms_count:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле комнат'
+            )
+        return self.obj.flat.rooms_count
+
+    def _get_floors(self):
+        if not self.obj.flat or not self.obj.flat.floors_total:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле этажности строения'
+            )
+        return self.obj.flat.floors_total
+
+    def _get_area(self):
+        if not self.obj.flat or not self.obj.flat.total_area:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле площади жилого помещения'
+            )
+        return self.obj.flat.total_area
+
+    def _get_id(self):
+        if not self.obj.id:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательные поля для контактов'
+            )
+        return self.obj.id
 
     def get_required_fields(self):
         try:
             return {
-                'id': '1',
+                'id': self._get_id(),
                 'Description': self._get_description(),
                 'Category': self._get_category(),
                 'OperationType': self._get_operation_type(),
                 'Price': self._get_price(),
                 'MarketType': self._get_market_type(),
                 'HouseType': self._get_house_type(),
-                'Floor':,
-                'Floors':,
-                'Rooms':,
-                'Square':,
-                'Status':,
+                'Floor': self._get_floor(),
+                'Floors': self._get_floors(),
+                'Square': self._get_area(),
+                'Status': 'Квартира',
             }
         except RequiredFieldsError:
             raise

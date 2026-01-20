@@ -60,16 +60,44 @@ class CianDictConstructor:
             } for phone in self.obj.contacts.phones
         ]
 
+    def _get_description(self):
+        if not self.obj.description:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле описания'
+            )
+        return self.obj.description
+
+    def _get_id(self):
+        if not self.obj.id:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательные поля для контактов'
+            )
+        return self.obj.id
+
+    def _get_rooms(self):
+        if not self.obj.flat or not self.obj.flat.rooms_count:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле комнат'
+            )
+        return self.obj.flat.rooms_count
+
+    def _get_area(self):
+        if not self.obj.flat or not self.obj.flat.total_area:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле площади жилого помещения'
+            )
+        return self.obj.flat.total_area
+
     def get_required_fields(self):
         try:
             return {
                 'Category': self._get_category(),
-                'ExternalId': self.obj.id,
-                'Description': self.obj.description,
+                'ExternalId': self._get_id(),
+                'Description': self._get_description,
                 'Address': self._get_address(),
-                'FlatRoomsCount': self.obj.flat.rooms_count,
+                'FlatRoomsCount': self._get_rooms(),
                 'Phones': self._get_phones(),
-                'TotalArea': self.obj.flat.total_area,
+                'TotalArea': self._get_area(),
             }
         except RequiredFieldsError:
             raise

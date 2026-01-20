@@ -111,21 +111,49 @@ class YandexDictConstructor:
             'unit': 'кв. м'
         }
 
+    def _get_created_date(self):
+        if self.obj.created_at:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поля даты создания объявления'
+            )
+        return self.obj.created_at
+
+    def _get_rooms(self):
+        if not self.obj.flat or not self.obj.flat.rooms_count:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле комнат'
+            )
+        return self.obj.flat.rooms_count
+
+    def _get_floor(self):
+        if not self.obj.flat or not self.obj.flat.floor:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле этажа'
+            )
+        return self.obj.flat.floor
+
+    def _get_id(self):
+        if not self.obj.id:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательные поля для контактов'
+            )
+        return self.obj.id
+
     def get_required_fields(self):
         try:
             return {
-                'internal-id': '1',
+                'internal-id': self._get_id(),
                 'type': self._get_type_deal(),
                 'property-type': self._get_property(),
                 'category': self.obj.object_type.value,
-                'creation-date': self.obj.created_at,
+                'creation-date': self._get_created_date(),
                 'location': self._get_location(),
                 'sales-agent': self._get_sales_agent_info(),
                 'price': self._get_price(),
                 'area': self._get_area(),
-                'rooms': self.obj.flat.rooms_count,
-                'rooms-offered': self.obj.flat.rooms_count,
-                'floor': self.obj.flat.floor,
+                'rooms': self._get_rooms(),
+                'rooms-offered': self._get_rooms(),
+                'floor': self._get_floor(),
                 # 'yandex-building-id':, # специфичные поля (нужно что-то таблицы соответстий)
                 # 'yandex-house-id':, # специфичные поля (нужно что-то таблицы соответстий)
                 # 'built-year':,
