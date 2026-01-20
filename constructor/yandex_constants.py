@@ -5,26 +5,26 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SIMPLE_FIELDS = [
+SIMPLE_FIELDS = (
     'type',
     'property-type',
     'category',
     'creation-date',
     'rooms',
     'floor',
-]
+)
 
-DICT_FIELDS = [
+DICT_FIELDS = (
     'location',
     'price',
     'area',
     'sales-agent',
-]
+)
 
-LIST_FIELDS = [
+LIST_FIELDS = (
     'metro',
     'phone',
-]
+)
 
 TEST_YANDEX_DICT = {
     'internal-id': '1',

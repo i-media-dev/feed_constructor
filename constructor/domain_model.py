@@ -133,7 +133,7 @@ class FlatDetails:
     loggias_count: Optional[int] = None  # количество лоджий
 
     # repair_type: Optional[str] = None
-    layout_type: Optional[str] = None  # тип макета
+    layout_type: Optional[str] = None  # планировка
 
 
 @dataclass

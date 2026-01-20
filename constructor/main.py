@@ -8,6 +8,7 @@ from constructor.decorators import time_of_script
 from constructor.logging_config import setup_logging
 from constructor.yandex_constants import TEST_YANDEX_DICT
 from constructor.yandex_feed_creator import YandexFeedCreator
+from constructor.avito_constants import TEST_AVITO_DICT
 
 # from constructor.avito_constants import
 
@@ -19,11 +20,12 @@ def main():
     try:
         cian_feed_creator = CianFeedCreator(TEST_CIAN_DICT)
         yandex_feed_creator = YandexFeedCreator(TEST_YANDEX_DICT)
-        # avito_feed_creator = AvitoFeedCreator()
+        avito_feed_creator = AvitoFeedCreator(TEST_AVITO_DICT)
         cian_feed_creator.create_and_save_feed()
         yandex_feed_creator.create_and_save_feed()
+        avito_feed_creator.create_and_save_feed()
     except Exception as error:
-        print(f'Неожиданная ошибка: {error}')
+        logging.error('Неожиданная ошибка: %s', error)
         raise
 
 
