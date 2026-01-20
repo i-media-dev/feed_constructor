@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 
+from constructor.avito_constants import LIST_FIELDS, SIMPLE_FIELDS
 from constructor.mixins import FileMixin
-from constructor.avito_constants import SIMPLE_FIELDS, LIST_FIELDS
 
 
 class AvitoFeedCreator(FileMixin):

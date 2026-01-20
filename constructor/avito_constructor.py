@@ -1,9 +1,9 @@
 import logging
 
+from constructor.avito_constants import CATEGORIES_REALTY, TYPE_OF_DEAL
 from constructor.domain_model import RealtyObject
 from constructor.exceptions import RequiredFieldsError
 from constructor.logging_config import setup_logging
-from constructor.avito_constants import CATEGORIES_REALTY, TYPE_OF_DEAL
 
 setup_logging()
 

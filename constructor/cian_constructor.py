@@ -88,6 +88,20 @@ class CianDictConstructor:
             )
         return self.obj.flat.total_area
 
+    def _get_floor(self):
+        if not self.obj.flat or not self.obj.flat.floor:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле этажа'
+            )
+        return self.obj.flat.floor
+
+    def _get_email(self):
+        if not self.obj.contacts or not self.obj.contacts.contact_email:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательное поле почты'
+            )
+        return self.obj.contacts.contact_email
+
     def get_required_fields(self):
         try:
             return {
@@ -98,6 +112,8 @@ class CianDictConstructor:
                 'FlatRoomsCount': self._get_rooms(),
                 'Phones': self._get_phones(),
                 'TotalArea': self._get_area(),
+                'FloorNumber': self._get_floor(),
+                'Email': self._get_email()
             }
         except RequiredFieldsError:
             raise
