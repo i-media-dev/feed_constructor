@@ -18,9 +18,9 @@ setup_logging()
 @time_of_script
 def main():
     try:
-        cian_feed_creator = CianFeedCreator(TEST_CIAN_DICT)
-        yandex_feed_creator = YandexFeedCreator(TEST_YANDEX_DICT)
-        avito_feed_creator = AvitoFeedCreator(TEST_AVITO_DICT)
+        cian_feed_creator = CianFeedCreator([TEST_CIAN_DICT,])
+        yandex_feed_creator = YandexFeedCreator([TEST_YANDEX_DICT,])
+        avito_feed_creator = AvitoFeedCreator([TEST_AVITO_DICT,])
         cian_feed_creator.create_and_save_feed()
         yandex_feed_creator.create_and_save_feed()
         avito_feed_creator.create_and_save_feed()

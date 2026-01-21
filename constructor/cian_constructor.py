@@ -53,12 +53,14 @@ class CianDictConstructor:
             raise RequiredFieldsError(
                 'Отсутствуют обязательные поля для контактов'
             )
-        return [
-            {
-                'CountryCode': phone.country_code,
-                'Number': phone.number
-            } for phone in self.obj.contacts.phones
-        ]
+        return {
+            'PhoneSchema': [
+                {
+                    'CountryCode': phone.country_code,
+                    'Number': phone.number
+                } for phone in self.obj.contacts.phones
+            ]
+        }
 
     def _get_description(self):
         if not self.obj.description:

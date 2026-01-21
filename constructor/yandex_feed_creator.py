@@ -1,70 +1,61 @@
 import xml.etree.ElementTree as ET
+from datetime import datetime, timedelta, timezone
 
 from constructor.mixins import FileMixin
-from constructor.yandex_constants import (DICT_FIELDS, LIST_FIELDS,
-                                          SIMPLE_FIELDS)
 
 
 class YandexFeedCreator(FileMixin):
 
-    def __init__(self, data: dict):
+    def __init__(self, data: list[dict]):
         self.data = data
 
-    def _append_value(self, parent, key, value):
+    def build_feed(self) -> ET.Element:
+        root = ET.Element(
+            'realty-feed',
+            {'xmlns': 'http://webmaster.yandex.ru/schemas/feed/realty/2010-06'}
+        )
+        dt = datetime.now(timezone(timedelta(hours=4)))
+        generation_date = ET.SubElement(root, 'generation-date')
+        generation_date.text = str(dt)
+        for object in self.data:
+            offer = ET.SubElement(
+                root,
+                'offer',
+                {'internal-id': object['internal-id']}
+            )
+            self._append_dict(offer, object)
+
+        return root
+
+    def _append_dict(self, parent: ET.Element, data: dict):
+        for key, value in data.items():
+            self._append_value(parent, key, value)
+
+    def _append_value(self, parent: ET.Element, key: str, value):
         if value is None:
             return
 
-        if isinstance(value, dict):
-            element = ET.SubElement(parent, key)
-            for k, v in value.items():
-                self._append_value(element, k, v)
-
-        elif isinstance(value, list):
-            self._append_list(parent, key, value)
-
-        else:
+        if isinstance(value, (str, int, float)):
             element = ET.SubElement(parent, key)
             element.text = str(value)
 
-    def _append_list(self, parent, key, items):
-        wrapper = ET.SubElement(parent, key)
-        item_tag = {
-            'metro': 'metro',
-            'phone': 'phone',
-            'image': 'image',
-        }.get(key, 'item')
+        elif isinstance(value, dict):
+            element = ET.SubElement(parent, key)
+            self._append_dict(element, value)
 
-        for item in items:
-            item_element = ET.SubElement(wrapper, item_tag)
-            if isinstance(item, dict):
-                for k, v in item.items():
-                    self._append_value(item_element, k, v)
-            else:
-                item_element.text = str(item)
+        elif isinstance(value, list):
+            for item in value:
+                if isinstance(item, dict):
+                    element = ET.SubElement(parent, key)
+                    self._append_dict(element, item)
+                else:
+                    element = ET.SubElement(parent, key)
+                    element.text = str(item)
 
-    def build_feed(self):
-        root = ET.Element('realty-feed')
-
-        object_element = ET.SubElement(root, 'offer')
-        object_element.set('internal-id', self.data['internal-id'])
-
-        for key in SIMPLE_FIELDS:
-            value = self.data.get(key)
-            if value is not None:
-                element = ET.SubElement(object_element, key)
-                element.text = str(value)
-
-        for key in DICT_FIELDS:
-            value = self.data.get(key)
-            if value:
-                self._append_value(object_element, key, value)
-
-        for key in LIST_FIELDS:
-            items = self.data.get(key, [])
-            if items:
-                self._append_list(object_element, key, items)
-
-        return root
+        else:
+            raise TypeError(
+                f'Неподдерживаемый тип для ключа "{key}": {type(value)}'
+            )
 
     def create_and_save_feed(self, filename='yandex_test.xml'):
         root = self.build_feed()

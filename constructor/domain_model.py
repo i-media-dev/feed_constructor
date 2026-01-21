@@ -142,9 +142,10 @@ class BuildingDetails:
     year_built: Optional[int] = None  # год постройки
     building_type: Optional[str] = None  # тип строения
     building_material: Optional[str] = None  # материал строения
+    parking: Optional[str] = None  # паркинг
+    jk_name: Optional[str] = None  # название жк
 
     has_elevator: Optional[bool] = None  # лифт
-    has_parking: Optional[bool] = None  # паркинг
     has_garbage_chute: Optional[bool] = None  # мусоропровод
 
 

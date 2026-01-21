@@ -20,24 +20,6 @@ TYPE_OF_DEAL = {
 }
 """Словарь соответствий типа сделок."""
 
-SIMPLE_FIELDS = (
-    'id',
-    'Description',
-    'Category',
-    'OperationType',
-    'Price',
-    'MarketType',
-    'HouseType',
-    'Floor',
-    'Floors',
-    'Square',
-    'Status',
-)
-
-LIST_FIELDS = (
-    'Images',
-)
-
 TEST_AVITO_DICT = {
     'id': '123',
     'Description': 'баллбафлфалфыафдыладлф фждылаж дфлыждл фды жфдылажфл ыдпж дфлыажд фж',
@@ -50,4 +32,10 @@ TEST_AVITO_DICT = {
     'Floors': '21',
     'Square': '38',
     'Status': 'Квартира',
+    'Images': {
+        'Image': [
+            'картинка 1',
+            'картинка 2'
+        ]
+    }
 }

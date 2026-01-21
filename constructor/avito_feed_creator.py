@@ -1,60 +1,53 @@
 import xml.etree.ElementTree as ET
 
-from constructor.avito_constants import LIST_FIELDS, SIMPLE_FIELDS
 from constructor.mixins import FileMixin
 
 
 class AvitoFeedCreator(FileMixin):
 
-    def __init__(self, data: dict):
+    def __init__(self, data: list):
         self.data = data
 
-    def _append_value(self, parent, key, value):
+    def build_feed(self) -> ET.Element:
+        root = ET.Element(
+            'Ads',
+            {'formatVersion': '3', 'target': 'Avito.ru'}
+        )
+        for object in self.data:
+            ad = ET.SubElement(root, 'Ad')
+            self._append_dict(ad, object)
+
+        return root
+
+    def _append_dict(self, parent: ET.Element, data: dict):
+        for key, value in data.items():
+            self._append_value(parent, key, value)
+
+    def _append_value(self, parent: ET.Element, key: str, value):
         if value is None:
             return
 
-        if isinstance(value, dict):
-            element = ET.SubElement(parent, key)
-            for k, v in value.items():
-                self._append_value(element, k, v)
-
-        elif isinstance(value, list):
-            self._append_list(parent, key, value)
-
-        else:
+        if isinstance(value, (str, int, float)):
             element = ET.SubElement(parent, key)
             element.text = str(value)
 
-    def _append_list(self, parent, key, items):
-        wrapper = ET.SubElement(parent, key)
+        elif isinstance(value, dict):
+            element = ET.SubElement(parent, key)
+            self._append_dict(element, value)
 
-        for item in items:
-            item_element = ET.SubElement(wrapper, item)
-            if isinstance(item, dict):
-                for k, v in item.items():
-                    self._append_value(item_element, k, v)
-            else:
-                item_element.text = str(item)
+        elif isinstance(value, list):
+            for item in value:
+                if isinstance(item, dict):
+                    element = ET.SubElement(parent, key)
+                    self._append_dict(element, item)
+                else:
+                    element = ET.SubElement(parent, key)
+                    element.text = str(item)
 
-    def build_feed(self):
-        root = ET.Element('Ads')
-        root.set('formatVersion', '3')
-        root.set('target', 'Avito.ru')
-
-        object_element = ET.SubElement(root, 'Ad')
-
-        for key in SIMPLE_FIELDS:
-            value = self.data.get(key)
-            if value is not None:
-                element = ET.SubElement(object_element, key)
-                element.text = str(value)
-
-        for key in LIST_FIELDS:
-            items = self.data.get(key, [])
-            if items:
-                self._append_list(object_element, key, items)
-
-        return root
+        else:
+            raise TypeError(
+                f'Неподдерживаемый тип для ключа "{key}": {type(value)}'
+            )
 
     def create_and_save_feed(self, filename='avito_test.xml'):
         root = self.build_feed()

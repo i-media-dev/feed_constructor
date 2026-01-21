@@ -16,14 +16,14 @@ class AvitoDictConstructor:
     def _get_category(self):
         if not self.obj.object_type:
             raise RequiredFieldsError(
-                'Отсутствуют обязательные поля категорий'
+                'Отсутствует обязательное поле категории'
             )
         return CATEGORIES_REALTY.get(self.obj.object_type.value, 'Неизвестно')
 
     def _get_operation_type(self):
         if not self.obj.deal or not self.obj.deal.deal_type:
             raise RequiredFieldsError(
-                'Отсутствуют обязательные поля категорий'
+                'Отсутствует обязательное поле типа оперции'
             )
         return TYPE_OF_DEAL.get(self.obj.deal.deal_type.value, 'Неизвестно')
 
@@ -31,56 +31,56 @@ class AvitoDictConstructor:
         if not self.obj.deal or not self.obj.deal.rent \
                 or not self.obj.deal.rent.price:
             raise RequiredFieldsError(
-                'Отсутствуют обязательные поля цены'
+                'Отсутствуют обязательное поле цены'
             )
         return self.obj.deal.rent.price
 
     def _get_description(self):
         if not self.obj.description:
             raise RequiredFieldsError(
-                'Отсутствуют обязательные поля описания'
+                'Отсутствует обязательное поле описания'
             )
         return self.obj.description
 
     def _get_market_type(self):
         if not self.obj.building or not self.obj.building.building_type:
             raise RequiredFieldsError(
-                'Отсутствуют обязательное поле типа постройки'
+                'Отсутствует обязательное поле типа постройки'
             )
         return self.obj.building.building_type
 
     def _get_house_type(self):
         if not self.obj.building or not self.obj.building.building_material:
             raise RequiredFieldsError(
-                'Отсутствуют обязательное поле материала постройки'
+                'Отсутствует обязательное поле материала постройки'
             )
         return self.obj.building.building_material
 
     def _get_floor(self):
         if not self.obj.flat or not self.obj.flat.floor:
             raise RequiredFieldsError(
-                'Отсутствуют обязательное поле этажа'
+                'Отсутствует обязательное поле этажа'
             )
         return self.obj.flat.floor
 
     def _get_rooms(self):
         if not self.obj.flat or not self.obj.flat.rooms_count:
             raise RequiredFieldsError(
-                'Отсутствуют обязательное поле комнат'
+                'Отсутствует обязательное поле комнат'
             )
         return self.obj.flat.rooms_count
 
     def _get_floors(self):
         if not self.obj.flat or not self.obj.flat.floors_total:
             raise RequiredFieldsError(
-                'Отсутствуют обязательное поле этажности строения'
+                'Отсутствует обязательное поле этажности строения'
             )
         return self.obj.flat.floors_total
 
     def _get_area(self):
         if not self.obj.flat or not self.obj.flat.total_area:
             raise RequiredFieldsError(
-                'Отсутствуют обязательное поле площади жилого помещения'
+                'Отсутствует обязательное поле площади жилого помещения'
             )
         return self.obj.flat.total_area
 
@@ -90,6 +90,13 @@ class AvitoDictConstructor:
                 'Отсутствуют обязательные поля для контактов'
             )
         return self.obj.id
+
+    def _get_images(self):
+        if not self.obj.media or not self.obj.media.photos:
+            raise RequiredFieldsError(
+                'Отсутствуют обязательные поля для изображения'
+            )
+        return {'Image': [photo.url for photo in self.obj.media.photos]}
 
     def get_required_fields(self):
         try:
@@ -104,6 +111,7 @@ class AvitoDictConstructor:
                 'Floor': self._get_floor(),
                 'Floors': self._get_floors(),
                 'Square': self._get_area(),
+                'Images': self._get_images(),
                 'Status': 'Квартира',
             }
         except RequiredFieldsError:
