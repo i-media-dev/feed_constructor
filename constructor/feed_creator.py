@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from abc import abstractmethod
+from datetime import datetime, timedelta, timezone
 
 from constructor.mixins import FileMixin
 
@@ -58,3 +59,52 @@ class FeedCreator(FileMixin):
             xml_declaration=True
         )
         return file_path
+
+
+class AvitoFeedCreator(FeedCreator):
+
+    def build_feed(self) -> ET.Element:
+        root = ET.Element(
+            'Ads',
+            {'formatVersion': '3', 'target': 'Avito.ru'}
+        )
+        for object in self.data:
+            ad = ET.SubElement(root, 'Ad')
+            self._append_dict(ad, object)
+
+        return root
+
+
+class CianFeedCreator(FeedCreator):
+
+    def build_feed(self) -> ET.Element:
+        root = ET.Element('feed')
+        feed_version = ET.SubElement(root, 'feed_version')
+        feed_version.text = "2"
+
+        for object in self.data:
+            ad = ET.SubElement(root, 'Ad')
+            self._append_dict(ad, object)
+
+        return root
+
+
+class YandexFeedCreator(FeedCreator):
+
+    def build_feed(self) -> ET.Element:
+        root = ET.Element(
+            'realty-feed',
+            {'xmlns': 'http://webmaster.yandex.ru/schemas/feed/realty/2010-06'}
+        )
+        dt = datetime.now(timezone(timedelta(hours=4)))
+        generation_date = ET.SubElement(root, 'generation-date')
+        generation_date.text = str(dt)
+        for object in self.data:
+            offer = ET.SubElement(
+                root,
+                'offer',
+                {'internal-id': object['internal-id']}
+            )
+            self._append_dict(offer, object)
+
+        return root
