@@ -10,6 +10,7 @@ from constructor.feed_creator import (AvitoFeedCreator, CianFeedCreator,
 from constructor.logging_config import setup_logging
 from constructor.yandex_constants import TEST_YANDEX_DICT
 from constructor.yandex_constructor import YandexDictConstructor
+from constructor.feeds_save import FeedSaver
 
 setup_logging()
 
@@ -17,6 +18,7 @@ setup_logging()
 @time_of_script
 def main():
     try:
+        feed_saver = FeedSaver()
         cian_feed_creator = CianFeedCreator(
             'cian_feed.xml',
             'cian_feeds',
@@ -32,11 +34,12 @@ def main():
             'avito_feeds',
             [TEST_AVITO_DICT,]
         )
+        feed_saver.save_xml()
         cian_feed_creator.create_and_save_feed()
         yandex_feed_creator.create_and_save_feed()
         avito_feed_creator.create_and_save_feed()
     except Exception as error:
-        logging.error('Неожиданная ошибка: %s', error)
+        logging.error('Ошибка: %s', error)
         raise
 
 

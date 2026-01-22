@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
 from abc import abstractmethod
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any
 
 from constructor.mixins import FileMixin
 
@@ -20,7 +22,7 @@ class FeedCreator(FileMixin):
         for key, value in data.items():
             self._append_value(parent, key, value)
 
-    def _append_value(self, parent: ET.Element, key: str, value):
+    def _append_value(self, parent: ET.Element, key: str, value: Any):
         if value is None:
             return
 
@@ -46,7 +48,7 @@ class FeedCreator(FileMixin):
                 f'Неподдерживаемый тип для ключа "{key}": {type(value)}'
             )
 
-    def create_and_save_feed(self):
+    def create_and_save_feed(self) -> Path:
         root = self.build_feed()
         self._indent(root)
 
@@ -83,8 +85,8 @@ class CianFeedCreator(FeedCreator):
         feed_version.text = "2"
 
         for object in self.data:
-            ad = ET.SubElement(root, 'Ad')
-            self._append_dict(ad, object)
+            obj = ET.SubElement(root, 'object')
+            self._append_dict(obj, object)
 
         return root
 
