@@ -125,7 +125,6 @@ class FlatDetails:
     kitchen_area: Optional[float] = None  # площадь кухни
 
     floor: Optional[int] = None  # этаж
-    floors_total: Optional[int] = None  # всего этажей
 
     ceiling_height: Optional[float] = None  # высота потолков
 
@@ -144,7 +143,9 @@ class BuildingDetails:
     building_material: Optional[str] = None  # материал строения
     parking: Optional[str] = None  # паркинг
     jk_name: Optional[str] = None  # название жк
+    floors_total: Optional[int] = None  # всего этажей
 
+    buit: Optional[bool] = None  # строится или построено
     has_elevator: Optional[bool] = None  # лифт
     has_garbage_chute: Optional[bool] = None  # мусоропровод
 
