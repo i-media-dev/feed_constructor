@@ -1,121 +1,146 @@
 import logging
 
-from constructor.avito_constants import CATEGORIES_REALTY, TYPE_OF_DEAL
-from constructor.domain_model import RealtyObject
-from constructor.exceptions import RequiredFieldsError
 from constructor.logging_config import setup_logging
+from constructor.model_new_flat import NewFlatObject
+from constructor.model_seller import Seller
 
 setup_logging()
 
 
-class AvitoDictConstructor:
+class AvitoNewFlatConstructor:
+    CATEGORY = 'Квартиры'
+    OPERATION = 'Продам'
+    MARKET_TYPE = 'Новостройка'
 
-    def __init__(self, obj: RealtyObject):
-        self.obj = obj
+    def __init__(self, objects: list[NewFlatObject], seller: Seller):
+        self.objects = objects
+        self.seller = seller
 
-    def _get_category(self):
-        if not self.obj.object_type:
-            raise RequiredFieldsError(
-                'Отсутствует обязательное поле категории'
-            )
-        return CATEGORIES_REALTY.get(self.obj.object_type.value, 'Неизвестно')
+    def _get_price(self, obj: NewFlatObject):
+        if not obj.sale or not obj.sale.price:
+            return
+        return obj.sale.price
 
-    def _get_operation_type(self):
-        if not self.obj.deal or not self.obj.deal.deal_type:
-            raise RequiredFieldsError(
-                'Отсутствует обязательное поле типа оперции'
-            )
-        return TYPE_OF_DEAL.get(self.obj.deal.deal_type.value, 'Неизвестно')
+    def _get_description(self, obj: NewFlatObject) -> str:
+        parts = []
 
-    def _get_price(self):
-        if not self.obj.deal or not self.obj.deal.rent \
-                or not self.obj.deal.rent.price:
-            raise RequiredFieldsError(
-                'Отсутствуют обязательное поле цены'
-            )
-        return self.obj.deal.rent.price
+        if obj.description:
+            parts.append(obj.description)
 
-    def _get_description(self):
-        if not self.obj.description:
-            raise RequiredFieldsError(
-                'Отсутствует обязательное поле описания'
-            )
-        return self.obj.description
+        if obj.complex.description:
+            parts.append(obj.complex.description)
 
-    def _get_market_type(self):
-        if not self.obj.building or not self.obj.building.building_type:
-            raise RequiredFieldsError(
-                'Отсутствует обязательное поле типа постройки'
-            )
-        return self.obj.building.building_type
+        return '\n\n'.join(parts)
 
-    def _get_house_type(self):
-        if not self.obj.building or not self.obj.building.building_material:
-            raise RequiredFieldsError(
-                'Отсутствует обязательное поле материала постройки'
-            )
-        return self.obj.building.building_material
+    def _get_house_type(self, obj: NewFlatObject):
+        if not obj.building or not obj.building.building_material:
+            return
+        return obj.building.building_material
 
-    def _get_floor(self):
-        if not self.obj.flat or not self.obj.flat.floor:
-            raise RequiredFieldsError(
-                'Отсутствует обязательное поле этажа'
-            )
-        return self.obj.flat.floor
+    def _get_floors(self, obj: NewFlatObject):
+        if not obj.building or not obj.building.floors_total:
+            return
+        return obj.building.floors_total
 
-    def _get_rooms(self):
-        if not self.obj.flat or not self.obj.flat.rooms_count:
-            raise RequiredFieldsError(
-                'Отсутствует обязательное поле комнат'
-            )
-        return self.obj.flat.rooms_count
+    def _get_area(self, obj: NewFlatObject):
+        if not obj.areas or not obj.areas.total:
+            return
+        return obj.areas.total
 
-    def _get_floors(self):
-        if not self.obj.flat or not self.obj.flat.floors_total:
-            raise RequiredFieldsError(
-                'Отсутствует обязательное поле этажности строения'
-            )
-        return self.obj.flat.floors_total
+    def _get_development_id(self, obj: NewFlatObject):
+        pass
 
-    def _get_area(self):
-        if not self.obj.flat or not self.obj.flat.total_area:
-            raise RequiredFieldsError(
-                'Отсутствует обязательное поле площади жилого помещения'
-            )
-        return self.obj.flat.total_area
+    def _get_property_rights(self):
+        if not self.seller.category:
+            return
+        seller = self.seller.category.value
+        if seller == 'owner':
+            return 'Собственник'
+        if seller == 'developer':
+            return 'Застройщик'
+        return 'Посредник'
 
-    def _get_id(self):
-        if not self.obj.id:
-            raise RequiredFieldsError(
-                'Отсутствуют обязательные поля для контактов'
-            )
-        return self.obj.id
+    def _get_decoration(self, obj: NewFlatObject):
+        if not obj.decoration:
+            return
+        if obj.decoration.value == 'finishing':
+            return 'Чистовая'
+        if obj.decoration.value == 'pre_finishing':
+            return 'Предчистовая'
+        return 'Без отделки'
 
-    def _get_images(self):
-        if not self.obj.media or not self.obj.media.photos:
-            raise RequiredFieldsError(
-                'Отсутствуют обязательные поля для изображения'
-            )
-        return {'Image': [photo.url for photo in self.obj.media.photos]}
+    def _get_images(self, obj: NewFlatObject):
+        if not obj.media or not obj.media.photos:
+            return []
+        return {'Image': [photo.url for photo in obj.media.photos]}
 
-    def get_required_fields(self):
+    def identity_fields(self, obj):
         try:
             return {
-                'id': self._get_id(),
-                'Description': self._get_description(),
-                'Category': self._get_category(),
-                'OperationType': self._get_operation_type(),
-                'Price': self._get_price(),
-                'MarketType': self._get_market_type(),
-                'HouseType': self._get_house_type(),
-                'Floor': self._get_floor(),
-                'Floors': self._get_floors(),
-                'Square': self._get_area(),
-                'Images': self._get_images(),
-                'Status': 'Квартира',
+                'Id': obj.id,
+                'Category': self.CATEGORY,
+                'OperationType': self.OPERATION,
+                'MarketType': self.MARKET_TYPE,
             }
-        except RequiredFieldsError:
-            raise
         except Exception as error:
             logging.error('Неожиданная ошибка: %s', error)
             raise
+
+    def flat_fields(self, obj):
+        try:
+            return {
+                'Rooms': obj.rooms,
+                'Square': self._get_area(obj),
+                'Floor': obj.floor,
+                'Floors': self._get_floors(obj),
+                'Decoration': self._get_decoration(obj),
+                'Status': obj.type_flat,
+                'HouseType': self._get_house_type(obj),
+            }
+        except Exception as error:
+            logging.error('Неожиданная ошибка: %s', error)
+            raise
+
+    def development_fields(self, obj):
+        try:
+            return {
+                'NewDevelopmentId': self._get_development_id(obj),
+                'PropertyRights': self._get_property_rights(),
+            }
+        except Exception as error:
+            logging.error('Неожиданная ошибка: %s', error)
+            raise
+
+    def deal_fields(self, obj):
+        try:
+            return {
+                'Price': self._get_price(obj),
+            }
+        except Exception as error:
+            logging.error('Неожиданная ошибка: %s', error)
+            raise
+
+    def content_fields(self, obj):
+        try:
+            return {
+                'Description': self._get_description(obj),
+                'Images': self._get_images(obj),
+            }
+        except Exception as error:
+            logging.error('Неожиданная ошибка: %s', error)
+            raise
+
+    def build(self):
+        result = []
+
+        for obj in self.objects:
+            item = {}
+            item.update(self.identity_fields(obj))
+            item.update(self.flat_fields(obj))
+            item.update(self.development_fields(obj))
+            item.update(self.deal_fields(obj))
+            item.update(self.content_fields(obj))
+
+            result.append(item)
+
+        return result

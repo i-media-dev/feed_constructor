@@ -7,3 +7,9 @@ FEEDS = (
 
 IDS_CIAN = ''
 """Ссылка на фид с id жк CIAN."""
+
+IDS_YANDEX = ''
+"""Ссылка на фид с id жк YANDEX."""
+
+IDS_AVITO = ''
+"""Ссылка на фид с id жк AVITO."""

@@ -7,10 +7,10 @@ from constructor.cian_constructor import CianDictConstructor
 from constructor.decorators import time_of_script
 from constructor.feed_creator import (AvitoFeedCreator, CianFeedCreator,
                                       YandexFeedCreator)
+from constructor.feeds_save import FeedSaver
 from constructor.logging_config import setup_logging
 from constructor.yandex_constants import TEST_YANDEX_DICT
 from constructor.yandex_constructor import YandexDictConstructor
-from constructor.feeds_save import FeedSaver
 
 setup_logging()
 
