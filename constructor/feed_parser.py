@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 
-from constructor.domain_model import RealtyObject
+from constructor.model_new_flat import NewFlatObject
+from constructor.model_seller import Seller
 
 
 class FeedParser:

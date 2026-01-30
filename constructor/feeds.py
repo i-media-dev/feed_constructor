@@ -5,11 +5,11 @@ FEEDS = (
 )
 """Кортеж ссылок на фиды для скачивания."""
 
-IDS_CIAN = ''
-"""Ссылка на фид с id жк CIAN."""
+IDS_CIAN = 'https://www.cian.ru/newObjects/feed/'
+"""Ссылка на фид xml с id жк CIAN."""
 
-IDS_YANDEX = ''
-"""Ссылка на фид с id жк YANDEX."""
+IDS_YANDEX = 'https://realty.yandex.ru/newbuildings.tsv'
+"""Ссылка на файл tsv с id жк YANDEX."""
 
 IDS_AVITO = ''
 """Ссылка на фид с id жк AVITO."""
