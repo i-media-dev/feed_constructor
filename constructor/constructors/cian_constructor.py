@@ -1,8 +1,8 @@
 import logging
 
 from constructor.logging_config import setup_logging
-from constructor.model_new_flat import NewFlatObject
-from constructor.model_seller import Seller
+from constructor.models.model_new_flat import NewFlatObject
+from constructor.models.model_seller import Seller
 
 setup_logging()
 

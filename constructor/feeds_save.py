@@ -5,11 +5,11 @@ import xml.etree.ElementTree as ET
 import requests
 from dotenv import load_dotenv
 
-from constructor.constants import FEEDS_FOLDER
+from constructor.constants.constants import FEEDS_FOLDER
+from constructor.constants.feeds import FEEDS
 from constructor.decorators import retry_on_network_error, time_of_function
 from constructor.exceptions import (EmptyFeedsListError, EmptyXMLError,
                                     InvalidXMLError)
-from constructor.feeds import FEEDS
 from constructor.logging_config import setup_logging
 from constructor.mixins import FileMixin
 
