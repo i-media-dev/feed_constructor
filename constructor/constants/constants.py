@@ -15,3 +15,10 @@ ATTEMPTION_LOAD_FEED = 3
 
 FEEDS_FOLDER = os.getenv('FEEDS_FOLDER', 'input_feeds')
 """Папка с фидами по умолчанию."""
+
+OBJECTS = {
+    'cian': 'object',
+    'avito': 'Ad',
+    'yandex': 'offer',
+}
+"""Словарь соответствия тега объекта и площадки."""

@@ -72,7 +72,7 @@ class AvitoNewFlatConstructor:
     def _get_images(self, obj: NewFlatObject):
         if not obj.media or not obj.media.photos:
             return []
-        return {'Image': [photo.url for photo in obj.media.photos]}
+        return {'Image url=': [photo.url for photo in obj.media.photos]}
 
     def identity_fields(self, obj):
         try:

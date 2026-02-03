@@ -7,18 +7,6 @@ load_dotenv()
 IDS_CIAN = ''
 """Ссылка на фид с id жк CIAN."""
 
-REQUIRED_CIAN_FIELDS_FOR_FLAT_SALE = [
-    'Category',
-    'ExternalId',
-    'Description',
-    'Address',
-    'FlatRoomsCount',
-    'TotalArea',
-    'Phones',
-    'Email',
-]
-"""Множество обязательных полей для продажи квартиры для CIAN."""
-
 CIAN_FIELDS = {
     'category': {
         'path': 'ExternalId',
@@ -102,3 +90,4 @@ CIAN_FIELDS = {
         }
     }
 }
+"""Обязательные поля для парсинга фида CIAN."""

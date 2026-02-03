@@ -1,9 +1,9 @@
 import logging
 
-from constructor.constants.avito_constants import TEST_AVITO_DICT
+from constructor.constants.avito_constants import AVITO_FIELDS
 from constructor.constants.cian_constants import CIAN_FIELDS
 from constructor.constants.constants import FEEDS_FOLDER
-from constructor.constants.yandex_constants import TEST_YANDEX_DICT
+from constructor.constants.yandex_constants import YANDEX_FIELDS
 from constructor.constructors.avito_constructor import AvitoNewFlatConstructor
 from constructor.constructors.cian_constructor import CianNewFlatConstructor
 from constructor.constructors.yandex_constructor import \
@@ -32,6 +32,7 @@ def main():
             'developer_cian22.xml',
             FEEDS_FOLDER,
             CIAN_FIELDS,
+            ''
         )
         data = parser.parse_objects()
         pprint(data)

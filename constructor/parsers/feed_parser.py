@@ -56,8 +56,8 @@ class FeedParser(FileMixin):
             for item_node in node.findall(config['path']):
                 item = {}
                 for name, sub in config['fields'].items():
-                    if isinstance(sub, dict):
-                        item[name] = self._parse_field(item_node, sub)
+                    if isinstance(sub, dict) and 'attr' in sub:
+                        item[name] = item_node.attrib.get(sub['attr'])
                     else:
                         el = item_node.find(sub)
                         item[name] = el.text.strip(
