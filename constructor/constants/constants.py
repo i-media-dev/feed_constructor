@@ -22,3 +22,9 @@ OBJECTS = {
     'yandex': 'offer',
 }
 """Словарь соответствия тега объекта и площадки."""
+
+IDS_CIAN = 'https://www.cian.ru/newObjects/feed/'
+"""Ссылка на фид xml с id жк CIAN."""
+
+IDS_YANDEX = 'https://realty.yandex.ru/newbuildings.tsv'
+"""Ссылка на файл tsv с id жк YANDEX."""

@@ -22,23 +22,12 @@ PASSWORD='secret'
 HOST='db.example.com'
 DB_NAME='production_db'
 """
-avito_config = {
-    'user': os.getenv('DB_LOGIN_CIAN'),
-    'password': os.getenv('DB_PASSWORD_CIAN'),
-    'host': os.getenv('DB_HOST_CIAN'),
-    'database': os.getenv('DB_NAME_CIAN'),
-    'port': os.getenv('DB_PORT_CIAN', 3306),
-    'connection_timeout': 10,
-    'read_timeout': 60,
-    'use_pure': True
-}
-
-yandex_config = {
-    'user': os.getenv('DB_LOGIN_YANDEX'),
-    'password': os.getenv('DB_PASSWORD_YANDEX'),
-    'host': os.getenv('DB_HOST_YANDEX'),
-    'database': os.getenv('DB_NAME_YANDEX'),
-    'port': os.getenv('DB_PORT_YANDEX', 3306),
+config = {
+    'user': os.getenv('DB_LOGIN_REALTY'),
+    'password': os.getenv('DB_PASSWORD_REALTY'),
+    'host': os.getenv('DB_HOST_REALTY'),
+    'database': os.getenv('DB_NAME_REALTY'),
+    'port': os.getenv('DB_PORT_REALTY', 3306),
     'connection_timeout': 10,
     'read_timeout': 60,
     'use_pure': True
