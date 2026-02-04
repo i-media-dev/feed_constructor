@@ -10,7 +10,7 @@ from constructor.constants.feeds import FEEDS
 from constructor.decorators import retry_on_network_error, time_of_function
 from constructor.exceptions import (EmptyFeedsListError, EmptyXMLError,
                                     InvalidXMLError)
-from constructor.logging_config import setup_logging
+from constructor.settings.logging_config import setup_logging
 from constructor.mixins import FileMixin
 
 setup_logging()

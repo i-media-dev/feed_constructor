@@ -4,7 +4,7 @@ from pathlib import Path
 
 from constructor.exceptions import (DirectoryCreationError,
                                     EmptyFeedsListError, GetTreeError)
-from constructor.logging_config import setup_logging
+from constructor.settings.logging_config import setup_logging
 
 setup_logging()
 

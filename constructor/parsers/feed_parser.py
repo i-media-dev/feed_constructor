@@ -1,6 +1,6 @@
 import logging
 
-from constructor.logging_config import setup_logging
+from constructor.settings.logging_config import setup_logging
 from constructor.mixins import FileMixin
 
 setup_logging()

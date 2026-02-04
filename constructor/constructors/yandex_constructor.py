@@ -1,6 +1,6 @@
 import logging
 
-from constructor.logging_config import setup_logging
+from constructor.settings.logging_config import setup_logging
 from constructor.models.model_new_flat import NewFlatObject
 from constructor.models.model_seller import Seller
 

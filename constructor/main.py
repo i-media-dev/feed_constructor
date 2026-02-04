@@ -2,7 +2,7 @@ import logging
 
 from constructor.constants.avito_constants import AVITO_FIELDS
 from constructor.constants.cian_constants import CIAN_FIELDS
-from constructor.constants.constants import FEEDS_FOLDER
+from constructor.constants.constants import FEEDS_FOLDER, OBJECTS
 from constructor.constants.yandex_constants import YANDEX_FIELDS
 from constructor.constructors.avito_constructor import AvitoNewFlatConstructor
 from constructor.constructors.cian_constructor import CianNewFlatConstructor
@@ -12,7 +12,7 @@ from constructor.decorators import time_of_script
 from constructor.feed_creator import (AvitoFeedCreator, CianFeedCreator,
                                       YandexFeedCreator)
 from constructor.feeds_save import FeedSaver
-from constructor.logging_config import setup_logging
+from constructor.settings.logging_config import setup_logging
 from constructor.parsers.feed_parser import FeedParser
 from constructor.utils import get_filenames_list
 
@@ -32,13 +32,15 @@ def main():
             'developer_cian22.xml',
             FEEDS_FOLDER,
             CIAN_FIELDS,
-            ''
+            OBJECTS['cian']
         )
         data = parser.parse_objects()
         pprint(data)
 
         # for filename in filenames:
-        #     parser = FeedParser(filename, FEEDS_FOLDER, CIAN_DICT)
+        #     parser = FeedParser(filename, FEEDS_FOLDER, CIAN_FIELDS, OBJECTS['cian'])
+        #     assembler = ....
+        #
         #     cian_constructor = CianNewFlatConstructor()
         #     avito_constructor = AvitoNewFlatConstructor()
         #     yandex_constructor = YandexNewFlatConstructor()
@@ -46,17 +48,17 @@ def main():
         #     cian_feed_creator = CianFeedCreator(
         #         'cian_feed.xml',
         #         'cian_feeds',
-        #         [TEST_CIAN_DICT,]
+        #         objects
         #     )
         #     yandex_feed_creator = YandexFeedCreator(
         #         'yandex_feed.xml',
         #         'yandex_feeds',
-        #         [TEST_YANDEX_DICT,]
+        #         objects
         #     )
         #     avito_feed_creator = AvitoFeedCreator(
         #         'avito_feed.xml',
         #         'avito_feeds',
-        #         [TEST_AVITO_DICT,]
+        #         objects
         #     )
 
         #     cian_feed_creator.create_and_save_feed()

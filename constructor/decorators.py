@@ -9,7 +9,7 @@ import requests
 
 from constructor.constants.constants import (ATTEMPTION_LOAD_FEED, DATE_FORMAT,
                                              TIME_FORMAT)
-from constructor.logging_config import setup_logging
+from constructor.settings.logging_config import setup_logging
 
 setup_logging()
 
