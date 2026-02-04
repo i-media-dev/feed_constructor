@@ -4,8 +4,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-IDS_CIAN = ''
-"""Ссылка на фид с id жк CIAN."""
 
 CIAN_FIELDS = {
     'category': {

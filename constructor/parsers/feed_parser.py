@@ -29,7 +29,7 @@ class FeedParser(FileMixin):
             logging.info('Корневой элемент - %s', self.root)
         return self._root
 
-    def _parse_field(self, node, config):
+    def _parse_field(self, node, config: dict):
         field_type = config['type']
 
         if field_type == 'text':
@@ -65,7 +65,7 @@ class FeedParser(FileMixin):
                 result.append(item)
             return result
 
-    def _parse_object(self, node):
+    def _parse_object(self, node) -> dict:
         data = {}
 
         for field_name, field_config in self.fields.items():
@@ -75,7 +75,7 @@ class FeedParser(FileMixin):
 
         return data
 
-    def parse_objects(self):
+    def parse_objects(self) -> list[dict]:
         data = []
         objects = self.root.findall(f'.//{self.path_tag}')
 
