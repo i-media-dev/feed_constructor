@@ -1,7 +1,7 @@
 import logging
 
-from constructor.settings.logging_config import setup_logging
 from constructor.mixins import FileMixin
+from constructor.settings.logging_config import setup_logging
 
 setup_logging()
 
@@ -66,7 +66,7 @@ class FeedParser(FileMixin):
             return result
 
     def _parse_object(self, node) -> dict:
-        data = {}
+        data: dict = {}
 
         for field_name, field_config in self.fields.items():
             value = self._parse_field(node, field_config)

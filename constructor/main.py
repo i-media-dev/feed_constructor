@@ -1,4 +1,5 @@
 import logging
+from pprint import pprint
 
 from constructor.constants.avito_constants import AVITO_FIELDS
 from constructor.constants.cian_constants import CIAN_FIELDS
@@ -12,11 +13,9 @@ from constructor.decorators import time_of_script
 from constructor.feed_creator import (AvitoFeedCreator, CianFeedCreator,
                                       YandexFeedCreator)
 from constructor.feeds_save import FeedSaver
-from constructor.settings.logging_config import setup_logging
 from constructor.parsers.feed_parser import FeedParser
+from constructor.settings.logging_config import setup_logging
 from constructor.utils import get_filenames_list
-
-from pprint import pprint
 
 setup_logging()
 
@@ -35,7 +34,7 @@ def main():
             OBJECTS['cian']
         )
         data = parser.parse_objects()
-        pprint(data)
+        pprint(data[0])
 
         # for filename in filenames:
         #     parser = FeedParser(filename, FEEDS_FOLDER, CIAN_FIELDS, OBJECTS['cian'])

@@ -7,11 +7,11 @@ load_dotenv()
 
 CIAN_FIELDS = {
     'category': {
-        'path': 'ExternalId',
+        'path': 'Category',
         'type': 'text',
     },
     'id': {
-        'path': 'Category',
+        'path': 'ExternalId',
         'type': 'text',
     },
     'description': {
@@ -44,7 +44,19 @@ CIAN_FIELDS = {
     },
     'jk': {
         'path': 'JKSchema',
-        'type': 'text',
+        'type': 'object',
+        'fields': {
+            'id': 'Id',
+            'name': 'Name',
+            'house': {
+                'type': 'object',
+                'path': 'House',
+                'fields': {
+                    'id': 'Id',
+                    'name': 'Name'
+                }
+            }
+        }
     },
     'email': {
         'path': 'Email',

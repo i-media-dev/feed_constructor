@@ -3,6 +3,8 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import List, Optional
 
+from constructor.models.model_seller import Seller
+
 
 class Currency(Enum):
     """Тип валюты."""
@@ -29,12 +31,12 @@ class Phone:
     number: str  # номер
 
 
-@dataclass
-class DeveloperContacts:
-    """Котнакты застройщика."""
-    phones: List[Phone]  # номер телефона застройщика
-    email: Optional[str] = None  # почта застройщика
-    sales_department_name: Optional[str] = None  # название отдела продаж
+# @dataclass
+# class DeveloperContacts:
+#     """Котнакты застройщика."""
+#     phones: List[Phone]  # номер телефона застройщика
+#     email: Optional[str] = None  # почта застройщика
+#     sales_department_name: Optional[str] = None  # название отдела продаж
 
 
 @dataclass
@@ -90,7 +92,7 @@ class ResidentialComplex:
     name: Optional[str] = None  # название жилого комплекса
 
     developer_name: Optional[str] = None  # название застройщика
-    contacts: Optional[DeveloperContacts] = None  # контакты застройщика
+    # contacts: Optional[DeveloperContacts] = None  # контакты застройщика
 
     address: Optional[Address] = None  # адрес
 
@@ -147,7 +149,6 @@ class NewFlatObject:
     """Моедль с суммарной полной информацией по объекту недвижимости."""
     id: str  # айди
 
-    complex: ResidentialComplex  # жк
     building: Building  # здание
 
     rooms: int  # количество комнат
@@ -155,8 +156,11 @@ class NewFlatObject:
     areas: FlatAreas  # площадь
 
     sale: SaleInfo  # информация по продаже
+    seller: Seller  # информация о продавце
 
-    type_flat: str = 'квартира'
+    type_flat: Optional[str] = None
+
+    complex: Optional[ResidentialComplex] = None  # жк
 
     decoration: Optional[DecorationType] = None  # тип отделки
 

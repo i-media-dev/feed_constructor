@@ -1,8 +1,7 @@
 import logging
 
-from constructor.settings.logging_config import setup_logging
 from constructor.models.model_new_flat import NewFlatObject
-from constructor.models.model_seller import Seller
+from constructor.settings.logging_config import setup_logging
 
 setup_logging()
 
@@ -14,9 +13,8 @@ class YandexNewFlatConstructor:
     COUNTRY = 'Россия'
     UNIT_AREA = 'кв. м'
 
-    def __init__(self, objects: list[NewFlatObject], seller: Seller):
+    def __init__(self, objects: list[NewFlatObject]):
         self.objects = objects
-        self.seller = seller
 
     def _get_address(self, obj: NewFlatObject):
         if not obj.complex or not obj.complex.address:
@@ -45,7 +43,7 @@ class YandexNewFlatConstructor:
         if obj.description:
             parts.append(obj.description)
 
-        if obj.complex.description:
+        if obj.complex and obj.complex.description:
             parts.append(obj.complex.description)
 
         return '\n\n'.join(parts)
@@ -69,19 +67,19 @@ class YandexNewFlatConstructor:
             'metro': metros
         }
 
-    def _get_sales_agent_info(self):
-        if not self.seller.phones or not self.seller.category:
+    def _get_sales_agent_info(self, obj: NewFlatObject):
+        if not obj.seller or not obj.seller.phones or not obj.seller.category:
             return {}
         return {
-            'name': self.seller.name,  # не обязательное
+            'name': obj.seller.name,  # не обязательное
             'phone': [
                 f'{phone.country_code}{phone.number}'
-                for phone in self.seller.phones
+                for phone in obj.seller.phones
             ],
-            'category': self.seller.category.value,
-            'organization': self.seller.organization,  # не обязательное
-            'url': self.seller.url,  # не обязательное
-            'photo': self.seller.photo_url  # не обязательное
+            'category': obj.seller.category.value,
+            'organization': obj.seller.organization,  # не обязательное
+            'url': obj.seller.url,  # не обязательное
+            'photo': obj.seller.photo_url  # не обязательное
         }
 
     def _get_price(self, obj: NewFlatObject):
@@ -92,11 +90,11 @@ class YandexNewFlatConstructor:
             'currency': obj.sale.currency
         }
 
-    def _get_deal_status(self):
-        if not self.seller.category:
+    def _get_deal_status(self, obj: NewFlatObject):
+        if not obj.seller or not obj.seller.category:
             return
         deal_status = 'прямая продажа'
-        if self.seller.category == 'developer':
+        if obj.seller.category == 'developer':
             deal_status = 'продажа от застройщика'
         return deal_status
 
@@ -175,7 +173,7 @@ class YandexNewFlatConstructor:
     def seller_info(self, obj: NewFlatObject):
         try:
             return {
-                'sales-agent': self._get_sales_agent_info(),
+                'sales-agent': self._get_sales_agent_info(obj),
             }
         except Exception as error:
             logging.error('Неожиданная ошибка: %s', error)
@@ -184,7 +182,7 @@ class YandexNewFlatConstructor:
     def dael_info(self, obj: NewFlatObject):
         try:
             return {
-                'deal-status': self._get_deal_status(),
+                'deal-status': self._get_deal_status(obj),
                 'price': self._get_price(obj)
             }
         except Exception as error:

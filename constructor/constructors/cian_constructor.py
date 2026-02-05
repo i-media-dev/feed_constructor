@@ -1,8 +1,7 @@
 import logging
 
-from constructor.settings.logging_config import setup_logging
 from constructor.models.model_new_flat import NewFlatObject
-from constructor.models.model_seller import Seller
+from constructor.settings.logging_config import setup_logging
 
 setup_logging()
 
@@ -13,9 +12,8 @@ class CianNewFlatConstructor:
     PERSONE_TYPE = 'Юридическое лицо'
     CATEGORY = 'Квартира в новостройке'
 
-    def __init__(self, objects: list[NewFlatObject], seller: Seller):
+    def __init__(self, objects: list[NewFlatObject]):
         self.objects = objects
-        self.seller = seller
 
     def _get_address(self, obj: NewFlatObject):
         if not obj.complex or not obj.complex.address:
@@ -39,15 +37,15 @@ class CianNewFlatConstructor:
 
         return ', '.join(address.split())
 
-    def _get_phones(self):
-        if not self.seller.phones:
+    def _get_phones(self, obj: NewFlatObject):
+        if not obj.seller or not obj.seller.phones:
             return {}
         return {
             'PhoneSchema': [
                 {
                     'CountryCode': phone.country_code,
                     'Number': phone.number
-                } for phone in self.seller.phones
+                } for phone in obj.seller.phones
             ]
         }
 
@@ -57,7 +55,7 @@ class CianNewFlatConstructor:
         if obj.description:
             parts.append(obj.description)
 
-        if obj.complex.description:
+        if obj.complex and obj.complex.description:
             parts.append(obj.complex.description)
 
         return '\n\n'.join(parts)
@@ -92,6 +90,11 @@ class CianNewFlatConstructor:
                 'Url': obj.media.videos
             }
         }
+
+    def _get_email(self, obj: NewFlatObject):
+        if not obj.seller or not obj.seller.email:
+            return
+        return obj.seller.email
 
     def _get_cplmoderation(self):
         return {'PersonType': self.PERSONE_TYPE}
@@ -160,11 +163,11 @@ class CianNewFlatConstructor:
             logging.error('Неожиданная ошибка: %s', error)
             raise
 
-    def contact_fields(self):
+    def contact_fields(self, obj: NewFlatObject):
         try:
             return {
-                'Phones': self._get_phones(),
-                'Email': self.seller.email
+                'Phones': self._get_phones(obj),
+                'Email': self._get_email(obj)
             }
         except Exception as error:
             logging.error('Неожиданная ошибка: %s', error)
@@ -188,7 +191,7 @@ class CianNewFlatConstructor:
             item.update(self.structure_fields(obj))
             item.update(self.info_fields(obj))
             item.update(self.law_fields())
-            item.update(self.contact_fields())
+            item.update(self.contact_fields(obj))
             item.update(self.media_fields(obj))
 
             result.append(item)

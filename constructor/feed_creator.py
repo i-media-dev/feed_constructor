@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -7,7 +7,7 @@ from typing import Any
 from constructor.mixins import FileMixin
 
 
-class FeedCreator(FileMixin):
+class FeedCreator(ABC, FileMixin):
 
     def __init__(self, filename: str, foldername: str, data: list):
         self.filename = filename

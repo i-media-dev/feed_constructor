@@ -1,8 +1,7 @@
 import logging
 
-from constructor.settings.logging_config import setup_logging
 from constructor.models.model_new_flat import NewFlatObject
-from constructor.models.model_seller import Seller
+from constructor.settings.logging_config import setup_logging
 
 setup_logging()
 
@@ -12,9 +11,8 @@ class AvitoNewFlatConstructor:
     OPERATION = 'Продам'
     MARKET_TYPE = 'Новостройка'
 
-    def __init__(self, objects: list[NewFlatObject], seller: Seller):
+    def __init__(self, objects: list[NewFlatObject]):
         self.objects = objects
-        self.seller = seller
 
     def _get_price(self, obj: NewFlatObject):
         if not obj.sale or not obj.sale.price:
@@ -27,7 +25,7 @@ class AvitoNewFlatConstructor:
         if obj.description:
             parts.append(obj.description)
 
-        if obj.complex.description:
+        if obj.complex and obj.complex.description:
             parts.append(obj.complex.description)
 
         return '\n\n'.join(parts)
@@ -50,10 +48,10 @@ class AvitoNewFlatConstructor:
     def _get_development_id(self, obj: NewFlatObject):
         pass
 
-    def _get_property_rights(self):
-        if not self.seller.category:
+    def _get_property_rights(self, obj: NewFlatObject):
+        if not obj.seller or not obj.seller.category:
             return
-        seller = self.seller.category.value
+        seller = obj.seller.category.value
         if seller == 'owner':
             return 'Собственник'
         if seller == 'developer':
@@ -74,7 +72,7 @@ class AvitoNewFlatConstructor:
             return []
         return {'Image url=': [photo.url for photo in obj.media.photos]}
 
-    def identity_fields(self, obj):
+    def identity_fields(self, obj: NewFlatObject):
         try:
             return {
                 'Id': obj.id,
@@ -86,7 +84,7 @@ class AvitoNewFlatConstructor:
             logging.error('Неожиданная ошибка: %s', error)
             raise
 
-    def flat_fields(self, obj):
+    def flat_fields(self, obj: NewFlatObject):
         try:
             return {
                 'Rooms': obj.rooms,
@@ -101,17 +99,17 @@ class AvitoNewFlatConstructor:
             logging.error('Неожиданная ошибка: %s', error)
             raise
 
-    def development_fields(self, obj):
+    def development_fields(self, obj: NewFlatObject):
         try:
             return {
                 'NewDevelopmentId': self._get_development_id(obj),
-                'PropertyRights': self._get_property_rights(),
+                'PropertyRights': self._get_property_rights(obj),
             }
         except Exception as error:
             logging.error('Неожиданная ошибка: %s', error)
             raise
 
-    def deal_fields(self, obj):
+    def deal_fields(self, obj: NewFlatObject):
         try:
             return {
                 'Price': self._get_price(obj),
@@ -120,7 +118,7 @@ class AvitoNewFlatConstructor:
             logging.error('Неожиданная ошибка: %s', error)
             raise
 
-    def content_fields(self, obj):
+    def content_fields(self, obj: NewFlatObject):
         try:
             return {
                 'Description': self._get_description(obj),
