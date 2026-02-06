@@ -2,8 +2,15 @@ import os
 
 from dotenv import load_dotenv
 
+from constructor.models.model_seller import SellerCategory
+
 load_dotenv()
 
+YANDEX_SELLER_MAP = {
+    'продажа от застройщика': SellerCategory.DEVELOPER,
+    'прямая продажа': SellerCategory.AGENCY,
+}
+"""Маппер продажника для YANDEX."""
 
 YANDEX_FIELDS = {
     'type': {

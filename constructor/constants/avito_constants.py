@@ -2,8 +2,16 @@ import os
 
 from dotenv import load_dotenv
 
+from constructor.models.model_seller import SellerCategory
+
 load_dotenv()
 
+AVITO_SELLER_MAP = {
+    'Застройщик': SellerCategory.DEVELOPER,
+    'Посредник': SellerCategory.AGENCY,
+    'Собственник': SellerCategory.OWNER,
+}
+"""Маппер продажника для YANDEX."""
 
 AVITO_FIELDS = {
     'id': {
@@ -67,7 +75,7 @@ AVITO_FIELDS = {
         'type': 'text',
     },
     'images': {
-        'path': 'Images',
+        'path': 'Images/Image',
         'type': 'list',
         'fields': {
             'url': {

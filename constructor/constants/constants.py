@@ -28,3 +28,6 @@ IDS_CIAN = 'https://www.cian.ru/newObjects/feed/'
 
 IDS_YANDEX = 'https://realty.yandex.ru/newbuildings.tsv'
 """Ссылка на файл tsv с id жк YANDEX."""
+
+IDS_AVITO = 'https://autoload.avito.ru/format/New_developments.xml'
+"""Ссылка на фид xml с id жк AVITO."""

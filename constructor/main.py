@@ -1,3 +1,4 @@
+import json
 import logging
 from pprint import pprint
 
@@ -15,7 +16,7 @@ from constructor.feed_creator import (AvitoFeedCreator, CianFeedCreator,
 from constructor.feeds_save import FeedSaver
 from constructor.parsers.feed_parser import FeedParser
 from constructor.settings.logging_config import setup_logging
-from constructor.utils import get_filenames_list
+from constructor.utils import get_filenames_list, save_to_json
 
 setup_logging()
 
@@ -33,8 +34,27 @@ def main():
             CIAN_FIELDS,
             OBJECTS['cian']
         )
-        data = parser.parse_objects()
-        pprint(data[0])
+        data_cian = parser.parse_objects()
+        save_to_json(data_cian[0], 'cian')
+
+        parser = FeedParser(
+            'developer_avito22.xml',
+            FEEDS_FOLDER,
+            AVITO_FIELDS,
+            OBJECTS['avito']
+        )
+        data_avito = parser.parse_objects()
+        save_to_json(data_avito[0], 'avito')
+
+        # parser = FeedParser(
+        #     'developer_yandex22.xml',
+        #     FEEDS_FOLDER,
+        #     YANDEX_FIELDS,
+        #     OBJECTS['yandex']
+        # )
+        # data_yandex = parser.parse_objects()
+        # json.dumps(data_yandex[0], ensure_ascii=False, indent=2)
+        # pprint(data_yandex[0])
 
         # for filename in filenames:
         #     parser = FeedParser(filename, FEEDS_FOLDER, CIAN_FIELDS, OBJECTS['cian'])

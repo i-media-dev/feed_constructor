@@ -31,12 +31,12 @@ class Phone:
     number: str  # номер
 
 
-# @dataclass
-# class DeveloperContacts:
-#     """Котнакты застройщика."""
-#     phones: List[Phone]  # номер телефона застройщика
-#     email: Optional[str] = None  # почта застройщика
-#     sales_department_name: Optional[str] = None  # название отдела продаж
+@dataclass
+class DeveloperContacts:
+    """Котнакты застройщика."""
+    phones: List[Phone]  # номер телефона застройщика
+    email: Optional[str] = None  # почта застройщика
+    sales_department_name: Optional[str] = None  # название отдела продаж
 
 
 @dataclass
@@ -92,7 +92,7 @@ class ResidentialComplex:
     name: Optional[str] = None  # название жилого комплекса
 
     developer_name: Optional[str] = None  # название застройщика
-    # contacts: Optional[DeveloperContacts] = None  # контакты застройщика
+    contacts: Optional[DeveloperContacts] = None  # контакты застройщика
 
     address: Optional[Address] = None  # адрес
 

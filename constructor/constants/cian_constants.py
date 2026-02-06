@@ -2,8 +2,18 @@ import os
 
 from dotenv import load_dotenv
 
+from constructor.models.model_seller import SellerCategory
+
 load_dotenv()
 
+
+CIAN_SELLER_MAP = {
+    'юридическое лицо': SellerCategory.COMPANY,
+    'частное лицо': SellerCategory.OWNER,
+    'legal': SellerCategory.COMPANY,
+    'natural': SellerCategory.OWNER,
+}
+"""Маппер продажника для CIAN."""
 
 CIAN_FIELDS = {
     'category': {
@@ -89,6 +99,7 @@ CIAN_FIELDS = {
         'type': 'object',
         'fields': {
             'price': 'Price',
+            'currency': 'Currency',
             'sale_type': 'SaleType',
             'agent_bonus': {
                 'type': 'object',
