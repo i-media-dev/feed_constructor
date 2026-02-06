@@ -3,17 +3,25 @@ import os
 from dotenv import load_dotenv
 
 from constructor.models.model_seller import SellerCategory
+from constructor.models.model_new_flat import Currency
 
 load_dotenv()
 
 
 CIAN_SELLER_MAP = {
-    'юридическое лицо': SellerCategory.COMPANY,
-    'частное лицо': SellerCategory.OWNER,
+    # 'юридическое лицо': SellerCategory.COMPANY,
+    # 'частное лицо': SellerCategory.OWNER,
     'legal': SellerCategory.COMPANY,
     'natural': SellerCategory.OWNER,
 }
 """Маппер продажника для CIAN."""
+
+CIAN_CURRENCY_MAP = {
+    'eur': Currency.EUR,
+    'rur': Currency.RUB,
+    'usd': Currency.USD
+}
+"""Маппер валюты для CIAN."""
 
 CIAN_FIELDS = {
     'category': {

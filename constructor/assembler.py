@@ -2,7 +2,7 @@ import logging
 from abc import ABC, abstractmethod
 
 from constructor.constants.avito_constants import AVITO_SELLER_MAP
-from constructor.constants.cian_constants import CIAN_SELLER_MAP
+from constructor.constants.cian_constants import CIAN_SELLER_MAP, CIAN_CURRENCY_MAP
 from constructor.constants.yandex_constants import YANDEX_SELLER_MAP
 from constructor.models.model_new_flat import (Address, Building, Currency,
                                                DecorationType,
@@ -32,59 +32,59 @@ class NewFlatAssembler(ABC):
         pass
 
     @abstractmethod
-    def _geo(self, obj):
+    def _build_geo(self, obj):
         pass
 
     @abstractmethod
-    def _underground(self):
+    def _build_underground(self, obj):
         pass
 
     @abstractmethod
-    def _address(self):
+    def _address(self, obj):
         pass
 
     @abstractmethod
-    def _build_rc_class(self):
+    def _build_rc_class(self, obj):
         pass
 
     @abstractmethod
-    def _build_decoration(self):
+    def _build_decoration(self, obj):
         pass
 
     @abstractmethod
-    def _residential_complex(self):
+    def _residential_complex(self, obj):
         pass
 
     @abstractmethod
-    def _build_building(self):
+    def _build_building(self, obj):
         pass
 
     @abstractmethod
-    def _build_areas(self):
+    def _build_areas(self, obj):
         pass
 
     @abstractmethod
-    def _build_photo(self):
+    def _build_photo(self, obj):
         pass
 
     @abstractmethod
-    def _build_media(self):
+    def _build_media(self, obj):
         pass
 
     @abstractmethod
-    def _build_flat(self):
+    def _build_flat(self, obj):
         pass
 
     @abstractmethod
-    def _build_seller_category(self):
+    def _build_seller_category(self, obj):
         pass
 
     @abstractmethod
-    def _build_phone(self):
+    def _build_phone(self, obj):
         pass
 
     @abstractmethod
-    def _build_seller(self):
+    def _build_seller(self, obj):
         pass
 
     def assemble(self):
@@ -104,71 +104,65 @@ class AvitoNewFlatAssembler(NewFlatAssembler):
 
 class CianNewFlatAssembler(NewFlatAssembler):
 
-    @abstractmethod
     def _build_currency(self, data: dict):
-        person_type = data.get('bargain_terms')
-        return Currency(
-            AVITO_SELLER_MAP.get(bargain_terms.get(''))
+        bargain_terms = data.get('bargain_terms')
+        if bargain_terms:
+            return Currency(
+                CIAN_CURRENCY_MAP.get(bargain_terms.get('currency'))
+            )
+
+    def _build_sale_info(self, data: dict):
+        bargain_terms = data.get('bargain_terms')
+        if bargain_terms:
+            return SaleInfo(
+                price=bargain_terms.get('price'),
+                currency=self._build_currency(data)
+            )
+
+    def _build_geo(self, data: dict):
+        return Geo()
+
+    def _build_underground(self, data: dict):
+        return Underground()
+
+    def _address(self, data: dict):
+        return Address(
+            raw_address=data.get('address')
         )
 
-    @abstractmethod
-    def _build_sale_info(self):
+    def _build_rc_class(self, data: dict):
+        return ResidentialComplexClass(
+
+        )
+
+    def _build_decoration(self, data: dict):
         pass
 
-    @abstractmethod
-    def _geo(self):
+    def _residential_complex(self, data: dict):
         pass
 
-    @abstractmethod
-    def _underground(self):
+    def _build_building(self, data: dict):
         pass
 
-    @abstractmethod
-    def _address(self):
+    def _build_areas(self, data: dict):
         pass
 
-    @abstractmethod
-    def _build_rc_class(self):
+    def _build_photo(self, data: dict):
         pass
 
-    @abstractmethod
-    def _build_decoration(self):
+    def _build_media(self, data: dict):
         pass
 
-    @abstractmethod
-    def _residential_complex(self):
+    def _build_flat(self, data: dict):
         pass
 
-    @abstractmethod
-    def _build_building(self):
+    def _build_seller_category(self, data: dict):
         pass
 
-    @abstractmethod
-    def _build_areas(self):
+    def _build_phone(self, data: dict):
         pass
 
-    @abstractmethod
-    def _build_photo(self):
-        pass
-
-    @abstractmethod
-    def _build_media(self):
-        pass
-
-    @abstractmethod
-    def _build_flat(self):
-        pass
-
-    @abstractmethod
-    def _build_seller_category(self):
-        pass
-
-    @abstractmethod
-    def _build_phone(self):
-        pass
-
-    @abstractmethod
-    def _build_seller(self):
+    def _build_seller(self, data: dict):
         pass
 
 

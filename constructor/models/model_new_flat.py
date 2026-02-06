@@ -49,7 +49,7 @@ class Geo:
 @dataclass
 class Underground:
     """Модель информации о метро."""
-    name: str
+    name: Optional[str] = None
 
     walk_time_minutes: Optional[int] = None
     transport_time_minutes: Optional[int] = None
@@ -64,6 +64,8 @@ class Address:
     street: Optional[str] = None  # улица
     house_number: Optional[str] = None  # номер дома
     block: Optional[str] = None  # район
+
+    raw_address: Optional[str] = None  # полный адрес
 
     geo: Optional[Geo] = None  # координаты
 
